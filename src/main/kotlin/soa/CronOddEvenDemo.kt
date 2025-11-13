@@ -51,6 +51,24 @@ class IntegrationApplication(
     fun evenChannel(): PublishSubscribeChannelSpec<*> = MessageChannels.publishSubscribe()
 
     /**
+     * Defines a publish-subscribe channel for odd numbers.
+     *
+     *
+     * CORRECCIÓN: Esto asegura que TODOS los suscriptores
+     * (oddFlow Y SomeService) reciban los mensajes.
+     */
+    @Bean
+    fun oddChannel(): PublishSubscribeChannelSpec<*> = MessageChannels.publishSubscribe()
+
+    /**
+     * Defines a channel for numbers injected by the gateway.
+     * CORRECCIÓN: Los números del gateway entran por aquí y van
+     * directamente a oddChannel.
+     */
+    @Bean
+    fun numberChannel() = MessageChannels.direct()
+
+    /**
      * Main integration flow that polls the integer source and routes messages.
      * Polls every 100ms and routes based on even/odd logic.
      */
@@ -69,6 +87,16 @@ class IntegrationApplication(
                 logger.info("🔀 Router: {} → {}", p, channel)
                 channel
             }
+        }
+
+    /**
+     * CORRECCIÓN:Los números del gateway van directamente
+     * a oddChannel sin procesamiento.
+     */
+    @Bean
+    fun numberFlow(): IntegrationFlow =
+        integrationFlow("numberChannel") {
+            channel("oddChannel")
         }
 
     /**
@@ -91,15 +119,19 @@ class IntegrationApplication(
      * Integration flow for processing odd numbers.
      * Applies a filter before transformation and logging.
      * Note: Examine the filter condition carefully.
+     *
+     * CORRECCIÓN: El filtro ahora acepta números
+     * IMPARES (p % 2 != 0).
+     * Los mensajes rechazados van a discardChannel.
      */
     @Bean
     fun oddFlow(): IntegrationFlow =
         integrationFlow("oddChannel") {
             filter { p: Int ->
-                val passes = p % 2 == 0
+                val passes = p % 2 != 0 // Acepta números IMPARES
                 logger.info("  🔍 Odd Filter: checking {} → {}", p, if (passes) "PASS" else "REJECT")
                 passes
-            } // , { discardChannel("discardChannel") })
+            } // , { discardChannel("discardChannel") })  // Mensajes rechazados van aquí
             transform { obj: Int ->
                 logger.info("  ⚙️  Odd Transformer: {} → 'Number {}'", obj, obj)
                 "Number $obj"
@@ -150,7 +182,7 @@ class SomeService {
  */
 @MessagingGateway
 interface SendNumber {
-    @Gateway(requestChannel = "evenChannel")
+    @Gateway(requestChannel = "numberChannel") // Usa numberChannel
     fun sendNumber(number: Int)
 }
 
