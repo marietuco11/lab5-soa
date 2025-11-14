@@ -43,11 +43,6 @@ lab5-soa/
 │   └── CronOddEvenDemo.kt          # Fixed Spring Integration flows
 ├── src/main/resources/
 │   └── application.yml             # Application configuration
-├── docs/
-│   ├── GUIDE.md                    # Assignment instructions
-│   └── EIP.png                     # Target EIP diagram (correct implementation)
-├── diagrams/
-│   └── before.png                  # EIP diagram of starter code (buggy version)
 ├── REPORT.md                       # Detailed analysis and documentation
 └── README.md                       # This file
 ```
@@ -91,41 +86,6 @@ The application demonstrates a complete integration flow with multiple patterns:
 **Problem**: Unused discardChannel added complexity  
 **Fix**: Removed discardChannel and simplified flow
 
-## 📊 Expected Output
-
-When running correctly, you should see output like this:
-
-```
-🚀 Gateway injecting: -77
-  🔧 Service Activator: Received [-77] (type: Integer)
-📥 Source generated number: 0
-🔀 Router: 0 → evenChannel
-  ⚙️  Even Transformer: 0 → 'Number 0'
-  ✅ Even Handler: Processed [Number 0]
-📥 Source generated number: 1
-🔀 Router: 1 → oddChannel
-  🔍 Odd Filter: checking 1 → PASS
-  ⚙️  Odd Transformer: 1 → 'Number 1'
-  ✅ Odd Handler: Processed [Number 1]
-  🔧 Service Activator: Received [Number 1] (type: String)
-```
-
-### Emoji Legend
-- 🚀 Gateway injection
-- 📥 Source generation
-- 🔀 Router decision
-- 🔍 Filter validation
-- ⚙️ Message transformation
-- ✅ Handler processing
-- 🔧 Service activation
-
-## 🧪 Code Quality
-
-Format and check code style:
-```bash
-./gradlew ktlintFormat  # Format code according to Kotlin conventions
-./gradlew ktlintCheck   # Check for style violations
-```
 
 ## 📚 Learning Objectives Achieved
 
@@ -137,56 +97,77 @@ By completing this lab, I have:
 - Fixed integration issues in message-driven systems
 - Documented work with clear technical explanations
 
-## 🎓 Assignment Documentation
 
-Complete assignment documentation is available in:
-- [REPORT.md](REPORT.md) - Detailed analysis, bug explanations, and learning outcomes
-- [docs/GUIDE.md](docs/GUIDE.md) - Original assignment instructions
-- [diagrams/before.png](diagrams/before.png) - EIP diagram of buggy starter code
-- [docs/EIP.png](docs/EIP.png) - Target EIP diagram (correct implementation)
+## Bonus opportunities
 
-## 🔗 Useful Resources
+Be the first to complete **at least two** of the following tasks to earn a bonus:
 
-### Enterprise Integration Patterns
-- [EIP Pattern Catalog](https://www.enterpriseintegrationpatterns.com/patterns/messaging/)
-- [Spring Integration Reference](https://docs.spring.io/spring-integration/reference/)
-- [Spring Integration Kotlin DSL](https://docs.spring.io/spring-integration/reference/dsl/kotlin-dsl.html)
+### 1. **Content Enricher Pattern**
 
-### Spring Integration Components
-- [Message Channels](https://docs.spring.io/spring-integration/reference/channel.html)
-- [Router](https://docs.spring.io/spring-integration/reference/router.html)
-- [Filter](https://docs.spring.io/spring-integration/reference/filter.html)
-- [Transformer](https://docs.spring.io/spring-integration/reference/transformer.html)
-- [Service Activator](https://docs.spring.io/spring-integration/reference/service-activator.html)
+- **Description**: Implement a Content Enricher that adds additional data to messages as they flow through the system.
+- **Implementation**: Add a content enricher that augments messages with metadata (timestamp, message ID, or external data lookup).
+- **Goal**: Demonstrate understanding of the Content Enricher pattern for message enhancement.
+- **Benefit**: Shows mastery of message enrichment patterns in integration scenarios.
 
-## 🏆 Bonus Opportunities
+### 2. **Splitter and Aggregator**
 
-This lab offers bonus opportunities for implementing additional EIP patterns. See [docs/GUIDE.md](docs/GUIDE.md) section 12 for details on:
-- Content Enricher Pattern
-- Splitter and Aggregator
-- Dead Letter Channel
-- Wire Tap
-- Message History
-- Dynamic Router
-- Claim Check Pattern
-- Idempotent Receiver
-- Integration Testing Framework
-- Metrics and Monitoring
+- **Description**: Implement message Splitter and Aggregator patterns to process composite messages.
+- **Implementation**: Split a batch of numbers into individual messages, process them separately, then aggregate results.
+- **Goal**: Master composite message processing patterns.
+- **Benefit**: Demonstrates understanding of parallel processing and result consolidation in integration flows.
 
-## 👨‍💻 Author
+### 3. **Dead Letter Channel**
 
-**Your Name**  
-Web Engineering 2025-2026  
-Universidad de Zaragoza
+- **Description**: Implement proper error handling with a Dead Letter Channel for failed messages.
+- **Implementation**: Add error handling that routes failed messages to a dead letter channel with retry logic.
+- **Goal**: Implement robust error handling in integration flows.
+- **Benefit**: Shows understanding of enterprise-grade error handling and recovery patterns.
 
-## 📝 License
+### 4. **Wire Tap**
 
-This project is part of the Web Engineering course at Universidad de Zaragoza.
+- **Description**: Implement a Wire Tap to monitor messages without affecting the main flow.
+- **Implementation**: Add wire taps to observe message content at key points without altering flow behavior.
+- **Goal**: Enable non-intrusive monitoring of integration flows.
+- **Benefit**: Demonstrates understanding of observability patterns in message-driven systems.
 
-## 🤝 Acknowledgments
+### 5. **Message History**
 
-- Course instructors for providing the assignment framework
-- Spring Integration team for excellent documentation
-- Enterprise Integration Patterns book by Gregor Hohpe and Bobby Woolf
+- **Description**: Track message history as messages flow through the integration system.
+- **Implementation**: Add message history tracking that records each component a message passes through.
+- **Goal**: Enable message flow traceability for debugging and auditing.
+- **Benefit**: Shows understanding of message tracking and audit trail patterns.
 
----
+### 6. **Dynamic Router**
+
+- **Description**: Implement a Dynamic Router that can change routing rules at runtime.
+- **Implementation**: Create a router with configurable rules that can be updated without restarting the application.
+- **Goal**: Demonstrate runtime reconfiguration of integration flows.
+- **Benefit**: Shows mastery of adaptive integration patterns and dynamic configuration.
+
+### 7. **Claim Check Pattern**
+
+- **Description**: Implement the Claim Check pattern to handle large message payloads efficiently.
+- **Implementation**: Store large payloads externally and pass references through the flow, retrieving content when needed.
+- **Goal**: Optimize message processing for large payloads.
+- **Benefit**: Demonstrates understanding of performance optimization in integration systems.
+
+### 8. **Idempotent Receiver**
+
+- **Description**: Implement an Idempotent Receiver to handle duplicate messages safely.
+- **Implementation**: Add idempotency support that detects and handles duplicate messages without side effects.
+- **Goal**: Ensure message processing reliability in unreliable network conditions.
+- **Benefit**: Shows understanding of reliable messaging patterns and duplicate detection.
+
+### 9. **Integration Testing Framework**
+
+- **Description**: Create a comprehensive integration testing suite for Spring Integration flows.
+- **Implementation**: Use Spring Integration Test support to write tests that verify flow behavior, message routing, and transformations.
+- **Goal**: Ensure integration flow correctness through automated testing.
+- **Benefit**: Demonstrates testing strategies for message-driven architectures.
+
+### 10. **Metrics and Monitoring**
+
+- **Description**: Add comprehensive monitoring and metrics collection for integration flows.
+- **Implementation**: Integrate Spring Boot Actuator and Micrometer to expose metrics about message rates, processing times, and error rates.
+- **Goal**: Enable production observability of integration flows.
+- **Benefit**: Shows understanding of operational concerns in integration systems.
