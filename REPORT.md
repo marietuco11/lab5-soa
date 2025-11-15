@@ -63,12 +63,6 @@ Problem: The SendNumber gateway was configured with requestChannel = "evenChanne
 
 Why it happened: Missing architectural separation - the gateway needed its own entry point to avoid interfering with the router's logic.
 
-Evidence in output:
-
-🚀 Gateway injecting: -76
-⚙️  Even Transformer: -76 → 'Number -76'
-✅ Even Handler: Processed [Number -76]
-Negative numbers (which are odd) were being processed as even numbers.
 
 Fix: Created a dedicated numberChannel and routing flow:
 
@@ -127,7 +121,7 @@ Integration flows are composable: Each flow is a bean that can be connected to c
 
 Challenge,Solution
 Understanding why odd numbers behaved inconsistently,Learned about channel types and how DirectChannel load-balances vs. PublishSubscribeChannel broadcasts.
-Tracing message flow through multiple components,Used the logging statements with emojis to visualize the path each message takes.
+Tracing message flow through multiple components,Used the logging statements to visualize the path each message takes.
 Understanding why negative numbers needed separate handling,Realized that gateway-injected messages should bypass routing logic and go directly to the service without transformation.
 ---
 
@@ -141,7 +135,7 @@ Understanding why negative numbers needed separate handling,Realized that gatewa
 Copilot
 
 Explaining the difference between DirectChannel and PublishSubscribeChannel.
-Structuring the REPORT.md with clear sections.
+Structuring the REPORT.md with clear sections and some ideas.
 
 **Important**: Explain your own understanding of the code and patterns, even if AI helped you write it.
 
